@@ -512,7 +512,7 @@ while True:
 
     elif keuze == '3':
 
-            schedule_file_path = "C:/Users/tijnm/OneDrive/Documenten/school/ZUYD/Leerjaar 2/Blok 2/Algoritmes/VSopdrachten/Week4/CASUS/Programma.txt"
+            schedule_file_path = "Programma.txt"
             schedule = read_schedule(schedule_file_path)
             calculate_route_for_schedule(graph, schedule)
 
