@@ -1,4 +1,7 @@
 import heapq
+import timeit
+import tracemalloc
+
 
 class Graph(object):
     def __init__(self, graph_dict=None):
@@ -178,6 +181,12 @@ def calculate_route_for_schedule(graph, schedule):
     else:
         print("Je moet wel via een ingang naar binnen dommie!")
         return
+    
+    ##
+    tracemalloc.start()
+    start_time = timeit.default_timer()
+    ##
+
 
     for i in range(len(schedule)):
         current_time, current_location = schedule[i]
@@ -195,6 +204,17 @@ def calculate_route_for_schedule(graph, schedule):
 
         start_location = current_location  # Update de startlocatie voor de volgende iteratie
         previous_location = current_location  # Update de vorige locatie voor de volgende iteratie
+
+    
+    ##
+    end_time = timeit.default_timer()
+    execution_time = end_time - start_time
+    print(f"\nTotale uitvoeringstijd: {execution_time} seconden")
+
+    current, peak = tracemalloc.get_traced_memory()
+    print(f"Maximaal geheugengebruik: {peak / 10**6} MB")
+    tracemalloc.stop()
+    ##
 
 if __name__ == '__main__':
     g = {
@@ -439,14 +459,35 @@ while True:
     if keuze == '1':
         current_location = input("\nIn welk lokaal begeeft u zich op dit moment? ")
 
+        ##
+        tracemalloc.start()
+        start_time = timeit.default_timer()
+        ##
+
         if current_location in graph.all_vertices():
             find_nearest_exit(graph, current_location)
         else:
             print("Ongeldige locatie. Voer alstublieft een geldig lokaal in.")
+
+        
+        ##
+        end_time = timeit.default_timer()
+        execution_time = end_time - start_time
+        print(f"\nTotale uitvoeringstijd: {execution_time} seconden")
+
+        current, peak = tracemalloc.get_traced_memory()
+        print(f"Maximaal geheugengebruik: {peak / 10**6} MB")
+        tracemalloc.stop()
+        ##
     elif keuze == '2':
         start_location = input("\nGeef de startlocatie: ")
         end_location = input("Geef de eindlocatie: ")
 
+        ##
+        tracemalloc.start()
+        start_time = timeit.default_timer()
+        ##
+        
         if start_location in graph.all_vertices() and end_location in graph.all_vertices():
 
             shortest_path, shortest_distance = dijkstra(graph, start_location, end_location)
@@ -458,10 +499,23 @@ while True:
                 print("Er is geen route gevonden.")
         else:
             print("Ongeldige locaties opgegeven.")
+
+        ##
+        end_time = timeit.default_timer()
+        execution_time = end_time - start_time
+        print(f"\nTotale uitvoeringstijd: {execution_time} seconden")
+
+        current, peak = tracemalloc.get_traced_memory()
+        print(f"Maximaal geheugengebruik: {peak / 10**6} MB")
+        tracemalloc.stop()
+        ##
+
     elif keuze == '3':
+
             schedule_file_path = "C:/Users/tijnm/OneDrive/Documenten/school/ZUYD/Leerjaar 2/Blok 2/Algoritmes/VSopdrachten/Week4/CASUS/Programma.txt"
             schedule = read_schedule(schedule_file_path)
             calculate_route_for_schedule(graph, schedule)
+
     elif keuze == '4':
         print("\nProgramma wordt afgesloten. Tot ziens!")
         break
